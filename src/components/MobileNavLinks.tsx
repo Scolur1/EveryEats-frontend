@@ -11,7 +11,7 @@ const MobileNavLinks = () => {
       </Link>
       <Button 
         className="flex items-center px-3 font-bold hover:bg-gray-500"
-        onClick={()=> logout()}
+        onClick={()=> logout({returnTo: "everyeats.onrender.com"})}
       >
         Logout
       </Button>

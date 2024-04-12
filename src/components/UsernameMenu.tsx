@@ -27,7 +27,7 @@ const UsernameMenu = () => {
         <DropdownMenuItem>
           <Button 
             className="flex flex-1 font-bold bg-orange-500"
-            onClick={()=> logout()}
+            onClick={()=> logout({returnTo: "everyeats.onrender.com"})}
           >
             Logout
           </Button>
