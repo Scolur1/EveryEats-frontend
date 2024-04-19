@@ -5,8 +5,10 @@ import SearchBar, { SearchForm } from "@/components/SearchBar";
 import SearchResultCard from "@/components/SearchResultCard";
 import SearchResultInfo from "@/components/SearchResultInfo";
 import SortOptionDropdown from "@/components/SortOptionDropdown";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
 export type SearchState = {
   searchQuery: string;
@@ -16,6 +18,8 @@ export type SearchState = {
 }
 const SearchPage = () => {
   const {city} = useParams();
+  const navigate = useNavigate();
+ 
   const [searchState, setSearchState] = useState<SearchState>({
     searchQuery: "",
     page: 1,
@@ -69,11 +73,26 @@ const SearchPage = () => {
     }));
   }
   if(isLoading){
-    <span>Loading...</span>
+   return (
+      <span>
+        <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
+        Loading...
+      </span>
+    )
   }
 
   if(!results?.data || !city){
-    return <span>No results found</span>
+    return (
+      <div className="flex flex-col justify-center items-center gap-3">
+        <span className="text-xl font-bold">No results for entry</span>
+        <Button 
+          onClick={() => navigate("/")}
+          className="bg-orange-500"
+        >
+          Back to Home
+        </Button>
+      </div> 
+    )
   }
 
 
@@ -97,7 +116,7 @@ const SearchPage = () => {
           onReset={resetSearch}
         />
         <div className="flex justify-between flex-col gap-3 lg:flex-row">
-          <SearchResultInfo total={results.pagination.total} city={city}/>
+          <SearchResultInfo total={results.pagination.total} city={city} />
           <SortOptionDropdown 
             sortOption={searchState.sortOption} 
             onChange={(value)=> setSortOptions(value)}
