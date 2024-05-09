@@ -18,7 +18,7 @@ const formSchema = z.object({
 })
 
 //define type to have better access through intellisense
-type UserFormData = z.infer<typeof formSchema>; //zod framework to auto infer type based on form schema
+export type UserFormData = z.infer<typeof formSchema>; //zod framework to auto infer type based on form schema
 
 type Props = {
   currentUser: User;
@@ -26,9 +26,17 @@ type Props = {
   //Passing onSave as prop means we can do all the api stuff at the page level
   onSave: (userProfileData: UserFormData) => void;
   isLoading: boolean;
+  title?: string;
+  buttonText?: string;
 }
 
-const UserProfileForm = ({onSave, isLoading, currentUser}: Props) => {
+const UserProfileForm = ({
+  onSave, 
+  isLoading, 
+  currentUser, 
+  title = "User Profile", 
+  buttonText = "Submit"
+}: Props) => {
   const form = useForm<UserFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: currentUser,
@@ -49,7 +57,7 @@ const UserProfileForm = ({onSave, isLoading, currentUser}: Props) => {
         className="space-y-4 bg-gray-50 rounded-lg md:p-10"
       >
         <div>
-          <h2 className="text-2xl font-bold">User Profile Form</h2>
+          <h2 className="text-2xl font-bold">{title}</h2>
           <FormDescription>
             View and change your profile information here
           </FormDescription>
@@ -123,7 +131,7 @@ const UserProfileForm = ({onSave, isLoading, currentUser}: Props) => {
         {isLoading ? (
           <LoadingButton/> 
         ):(
-          <Button type="submit" className="bg-orange-500">Submit</Button>
+          <Button type="submit" className="bg-orange-500">{buttonText}</Button>
         )}
       </form>
     </Form>
